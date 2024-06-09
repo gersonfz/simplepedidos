@@ -36,7 +36,7 @@ export const validationsRegister = async (data) => {
     }
 
     // Validación de formato de correo electrónico
-    if (data.personalEmail && !validateEmail(data.personalEmail)) {
+    if (data.personalEmail && !validations.validateEmail(data.personalEmail)) {
         errors.personalEmail = 'El formato de correo electrónico es inválido';
     }
 
@@ -58,32 +58,32 @@ export const validationsRegister = async (data) => {
 
 
     // Validación de formato de teléfono
-    if (data.personalPhone && !validatePhone(data.personalPhone)) {
+    if (data.personalPhone && !validations.validatePhone(data.personalPhone)) {
         errors.personalPhone = 'El formato de teléfono es inválido';
     }
 
     // Validación de contraseña
-    if (data.password && !validatePassword(data.password)) {
+    if (data.password && !validations.validatePassword(data.password)) {
         errors.password = 'La contraseña debe tener al menos 8 caracteres y contener al menos un número y un carácter especial';
     }
 
     // Validación de nombre de marca
-    if (data.brandName && !validateBrandName(data.brandName)) {
+    if (data.brandName && !validations.validateBrandName(data.brandName)) {
         errors.brandName = 'El nombre de la marca debe tener al menos 3 caracteres';
     }
 
     // Validación de ubicación de marca
-    if (data.brandLocation && !validateBrandLocation(data.brandLocation)) {
+    if (data.brandLocation && !validations.validateBrandLocation(data.brandLocation)) {
         errors.brandLocation = 'La ubicación de la marca debe tener al menos 3 caracteres';
     }
 
     // Validación de costo de envío
-    if (data.costDelivery && !validateCostDelivery(data.costDelivery)) {
+    if (data.costDelivery && !validations.validateCostDelivery(data.costDelivery)) {
         errors.costDelivery = 'El costo de envío debe ser un número positivo';
     }
 
     // Validación de cuenta de Instagram
-    if (data.brandInstagram && !validateBrandInstagram(data.brandInstagram)) {
+    if (data.brandInstagram && !validations.validateBrandInstagram(data.brandInstagram)) {
         errors.brandInstagram = 'La cuenta de Instagram de la marca es válida';
     }
 
@@ -93,33 +93,30 @@ export const validationsRegister = async (data) => {
 
 
 // Funciones de validación
-function validateEmail(email) {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(email);
-}
 
-function validatePhone(phone) {
-    const re = /^[0-9]{10}$/;
-    return re.test(phone);
-}
-
-function validatePassword(password) {
-    const re = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&*()_+=-{};:'<>,./?]).{8,}$/;
-    return re.test(password);
-}
-
-function validateBrandName(brandName) {
-    return brandName.length >= 3;
-}
-
-function validateBrandLocation(brandLocation) {
-    return brandLocation.length >= 3;
-}
-
-function validateCostDelivery(costDelivery) {
-    return typeof costDelivery === 'number' && costDelivery > 0;
-}
-
-function validateBrandInstagram(brandInstagram) {
-    return typeof brandInstagram === 'string';
+const validations = {
+    validateEmail(email) {
+        const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return re.test(email);
+    },
+    validatePhone(phone) {
+        const re = /^[0-9]{10}$/;
+        return re.test(phone);
+    },
+    validatePassword(password) {
+        const re = /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&*()_+=-{};:'<>,./?]).{8,}$/;
+        return re.test(password);
+    },
+    validateBrandName(brandName) {
+        return brandName.length >= 3;
+    },
+    validateBrandLocation(brandLocation) {
+        return brandLocation.length >= 3;
+    },
+    validateCostDelivery(costDelivery) {
+        return typeof costDelivery === 'number' && costDelivery > 0;
+    },
+    validateBrandInstagram(brandInstagram) {
+        return typeof brandInstagram === 'string';
+    }
 }
