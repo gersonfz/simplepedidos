@@ -13,4 +13,5 @@ const adminSchema = new mongoose.Schema({
     brandInstagram: String
 });
 
+
 export default mongoose.model('Admin', adminSchema);

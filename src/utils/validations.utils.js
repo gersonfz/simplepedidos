@@ -2,7 +2,6 @@ import adminModel from "../models/admin.model.js";
 
 export const validationsRegister = async (data) => {
     const errors = {};
-
     // Validación de campos obligatorios
     if (!data.personalName) {
         errors.personalName = 'El nombre personal es obligatorio';
@@ -45,13 +44,13 @@ export const validationsRegister = async (data) => {
         try {
             const existingAdmin = await adminModel.findOne({ personalEmail: data.personalEmail });
             const existingBrand = await adminModel.findOne({ brandEmail: data.brandEmail });
+            
             if (existingAdmin) {
                 errors.personalEmail = 'El correo electrónico personal ya está registrado';
             } else if (existingBrand) {
                 errors.brandEmail = 'El correo electrónico de la marca ya está registrado';
             }
         } catch (error) {
-            console.error(error);
             errors.email = 'Error al verificar la disponibilidad del correo electrónico';
         }
     }
@@ -87,8 +86,11 @@ export const validationsRegister = async (data) => {
         errors.brandInstagram = 'La cuenta de Instagram de la marca es válida';
     }
 
-    return errors;
-};
+    if (Object.keys(errors).length > 0) {
+        const error = new Error('Error en validación');
+        error.errors = errors; // Adjunta el objeto de errores al error
+        throw error;
+    }};
 
 
 
