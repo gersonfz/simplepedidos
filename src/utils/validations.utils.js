@@ -44,7 +44,7 @@ export const validationsRegister = async (data) => {
         try {
             const existingAdmin = await adminModel.findOne({ personalEmail: data.personalEmail });
             const existingBrand = await adminModel.findOne({ brandEmail: data.brandEmail });
-            
+
             if (existingAdmin) {
                 errors.personalEmail = 'El correo electrónico personal ya está registrado';
             } else if (existingBrand) {
@@ -85,12 +85,18 @@ export const validationsRegister = async (data) => {
     if (data.brandInstagram && !validations.validateBrandInstagram(data.brandInstagram)) {
         errors.brandInstagram = 'La cuenta de Instagram de la marca es válida';
     }
-
     if (Object.keys(errors).length > 0) {
+        console.log(errors);
+        if (!errors) {
+            throw new Error('No se encontraron errores de validación');
+        }
+        console.log(errors);
         const error = new Error('Error en validación');
         error.errors = errors; // Adjunta el objeto de errores al error
         throw error;
-    }};
+    }
+
+};
 
 
 

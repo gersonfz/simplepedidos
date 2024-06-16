@@ -28,9 +28,11 @@ class AdminServices {
                 costDelivery,
                 brandInstagram
             });
-
-            if (Object.keys(errors).length > 0) {
-                throw new Error(errors);
+            console.log(errors);
+            if(errors){
+                if (Object.keys(errors).length > 0) {
+                    throw new Error(errors);
+                }
             }
 
             // Registrar el administrador en la base de datos
@@ -47,7 +49,7 @@ class AdminServices {
                 brandInstagram
             });
             await admin.save();
-
+            console.log(admin);
             return admin;
         } catch (error) {
             console.error('Error registering admin:', error);

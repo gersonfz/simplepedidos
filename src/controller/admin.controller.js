@@ -27,7 +27,7 @@ class AdminController {
                 costDelivery,
                 brandInstagram
             });
-
+            console.log('admin: ' + admin);
             // Devolver una respuesta exitosa
             res.status(HTTP_STATUS.CREATED).json({
                 message: 'Administrador registrado con éxito',
