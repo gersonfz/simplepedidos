@@ -49,6 +49,32 @@ class AdminController {
             }
         }
     }
+    async login(req, res) {
+        try {
+            const { email, password } = req.body;
+
+            const admin = await adminServices.login(email, password);
+
+            // Devolver una respuesta exitosa
+            res.status(HTTP_STATUS.OK).json({
+                message: 'Inicio de sesión exitoso',
+                admin: admin
+            });
+        } catch (error) {
+            // Manejar errores de inicio de sesión
+            if (error.message === 'Invalid email or password') {
+                res.status(HTTP_STATUS.UNAUTHORIZED).json({
+                    message: 'Correo electrónico o contraseña inválidos'
+                });
+            } else {
+                // Manejo de otros errores
+                res.status(HTTP_STATUS.INTERNAL_ERROR).json({
+                    message: 'Error interno del servidor',
+                    error: error.message
+                });
+            }
+        }
+    }
 }
 
 export default new AdminController();

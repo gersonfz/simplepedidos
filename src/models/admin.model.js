@@ -3,15 +3,20 @@ import mongoose from 'mongoose';
 const adminSchema = new mongoose.Schema({
     personalName: String,
     personalEmail: { type: String, unique: true, required: true },
-    personalPhone: String,
+    personalPhone: { type: String, unique: true, required: true },
     password: String,
-    brandName: String,
+    brandName: { type: String, unique: true, required: true },
     brandEmail: { type: String, unique: true, required: true },
-    brandPhone: String,
+    brandPhone: { type: String, unique: true, required: true },
     brandLocation: String,
     costDelivery: Number,
-    brandInstagram: String
+    brandInstagram: { type: String, unique: true, required: true }
 });
 
+adminSchema.methods.toJSON = function () {
+    const admin = this.toObject();
+    delete admin.password;
+    return admin;
+};
 
 export default mongoose.model('Admin', adminSchema);

@@ -39,20 +39,37 @@ export const validationsRegister = async (data) => {
         errors.personalEmail = 'El formato de correo electrónico es inválido';
     }
 
-    // Validación de correo electrónico único
-    if (data.personalEmail && data.brandEmail) {
+    async function validateUniqueField(fieldName, fieldValue, errorMessage) {
         try {
-            const existingAdmin = await adminModel.findOne({ personalEmail: data.personalEmail });
-            const existingBrand = await adminModel.findOne({ brandEmail: data.brandEmail });
-
-            if (existingAdmin) {
-                errors.personalEmail = 'El correo electrónico personal ya está registrado';
-            } else if (existingBrand) {
-                errors.brandEmail = 'El correo electrónico de la marca ya está registrado';
+            const existingRecord = await adminModel.findOne({ [fieldName]: fieldValue });
+            if (existingRecord) {
+                errors[fieldName] = errorMessage;
             }
         } catch (error) {
-            errors.email = 'Error al verificar la disponibilidad del correo electrónico';
+            errors[fieldName] = `Error al verificar la disponibilidad de ${fieldName}`;
         }
+    }
+
+    // Validación de correos electrónicos únicos
+    if (data.personalEmail) {
+        await validateUniqueField('personalEmail', data.personalEmail, 'El correo electrónico personal ya está registrado');
+    }
+
+    if (data.brandEmail) {
+        await validateUniqueField('brandEmail', data.brandEmail, 'El correo electrónico de la marca ya está registrado');
+    }
+
+    // Validación de números de teléfono únicos
+    if (data.personalPhone) {
+        await validateUniqueField('personalPhone', data.personalPhone, 'El número de celular personal ya se encuentra registrado');
+    }
+
+    if (data.brandPhone) {
+        await validateUniqueField('brandPhone', data.brandPhone, 'El número de celular de la marca ya se encuentra registrado');
+    }
+
+    if (data.brandName) {
+        await validateUniqueField('brandName', data.brandName, 'El nombre de la marca ya se encuentra registrado');
     }
 
 
